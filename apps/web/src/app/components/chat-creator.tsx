@@ -4,16 +4,18 @@ import { Button } from "@repo/ui/components/button";
 import { ArrowUp, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useFormStatus } from "react-dom";
 import { createChat } from "../actions/chat-actions";
 import type { ChatHistoryItem } from "./chat-sidebar";
 
 function FormContent({
   message,
   setMessage,
-}: { message: string; setMessage: (value: string) => void }) {
-  const { pending } = useFormStatus();
-
+  isPending,
+}: {
+  message: string;
+  setMessage: (value: string) => void;
+  isPending: boolean;
+}) {
   return (
     <div className="relative">
       <textarea
@@ -23,18 +25,18 @@ function FormContent({
         placeholder="Build a landing page for a banana stand"
         className="max-h-40 min-h-[60px] w-full resize-none rounded-2xl border border-gray-700 bg-gray-800 p-4 pr-12 text-white placeholder-gray-400 focus:border-gray-600 focus:outline-none focus:ring-0 disabled:opacity-50"
         required
-        disabled={pending}
+        disabled={isPending}
       />
       <Button
         type="submit"
-        disabled={pending || !message.trim()}
-        className={`absolute right-4 bottom-4 h-8 w-8 rounded-full p-0 transition-colors ${
-          pending || !message.trim()
+        disabled={isPending || !message.trim()}
+        className={`absolute right-4 bottom-4 size-8 rounded-full p-0 transition-colors ${
+          isPending || !message.trim()
             ? "cursor-not-allowed bg-gray-600 text-gray-400"
             : "bg-white text-gray-900 hover:bg-gray-100"
         }`}
       >
-        {pending ? (
+        {isPending ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
           <ArrowUp className="size-4" />
@@ -45,16 +47,17 @@ function FormContent({
 }
 
 export function ChatCreator() {
+  const router = useRouter();
+
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
 
   const addChatToHistory = (chatData: ChatHistoryItem) => {
     try {
       const existingChats = localStorage.getItem("v0-chats");
       const chats = existingChats ? JSON.parse(existingChats) : [];
 
-      // Avoid duplicates
       const updatedChats = chats.filter(
         (chat: ChatHistoryItem) => chat.id !== chatData.id,
       );
@@ -66,17 +69,20 @@ export function ChatCreator() {
     }
   };
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(null);
+    setIsPending(true);
 
     try {
+      const formData = new FormData();
+      formData.append("message", message);
+
       const result = await createChat(formData);
 
       if (result.success && result.chatData) {
-        // Add to localStorage
         addChatToHistory(result.chatData);
-
-        // Navigate to the chat
+        setMessage(""); // Reset the message state
         router.push(`/chat/${result.chatData.id}`);
       } else {
         setError(result.error || "Failed to create chat");
@@ -84,6 +90,8 @@ export function ChatCreator() {
     } catch (error) {
       console.error("Error creating chat:", error);
       setError("Failed to create chat");
+    } finally {
+      setIsPending(false);
     }
   };
 
@@ -99,9 +107,13 @@ export function ChatCreator() {
 
   return (
     <div className="relative">
-      <form action={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Main input */}
-        <FormContent message={message} setMessage={setMessage} />
+        <FormContent
+          message={message}
+          setMessage={setMessage}
+          isPending={isPending}
+        />
 
         {error && (
           <div className="text-center text-red-400 text-sm">{error}</div>
@@ -116,6 +128,7 @@ export function ChatCreator() {
               variant="outline"
               onClick={() => handleSuggestionClick(suggestion)}
               className="rounded-full border-gray-600 bg-transparent text-gray-300 hover:border-gray-500 hover:bg-gray-800 hover:text-white disabled:opacity-50"
+              disabled={isPending}
             >
               {suggestion}
             </Button>

@@ -14,6 +14,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface ChatMessage {
   id: string;
@@ -73,9 +74,9 @@ function V0Message({ message }: { message: ChatMessage }) {
                 </span>
               )}
             </div>
-            <p className="whitespace-pre-wrap text-gray-300 text-sm">
-              {content}
-            </p>
+            <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300">
+              <ReactMarkdown>{content}</ReactMarkdown>
+            </div>
           </div>
         </div>
       </div>
@@ -144,8 +145,8 @@ function V0Message({ message }: { message: ChatMessage }) {
         {/* Normal Response Text */}
         {normalContent && (
           <div className="rounded-lg border border-gray-600/20 bg-gray-800/30 p-4">
-            <div className="whitespace-pre-wrap text-gray-300 text-sm leading-relaxed">
-              {normalContent}
+            <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300 leading-relaxed">
+              <ReactMarkdown>{normalContent}</ReactMarkdown>
             </div>
           </div>
         )}
@@ -247,9 +248,9 @@ export function MessagesArea({ messages }: MessagesAreaProps) {
                             </span>
                           )}
                         </div>
-                        <p className="whitespace-pre-wrap text-gray-300 text-sm">
-                          {message.content}
-                        </p>
+                        <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300">
+                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
                       </div>
                     </div>
                   </div>

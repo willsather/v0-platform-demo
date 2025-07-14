@@ -151,7 +151,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Eye className="h-5 w-5" />
-                    Live Preview
+                    Preview
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
