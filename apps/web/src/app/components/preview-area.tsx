@@ -7,8 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
-import { ScrollArea } from "@repo/ui/components/scroll-area";
-import { ExternalLink, Eye } from "lucide-react";
+import { ExternalLink, Eye, Fullscreen } from "lucide-react";
 
 interface PreviewAreaProps {
   demoUrl?: string;
@@ -25,17 +24,26 @@ export function PreviewArea({ demoUrl, sourceUrl }: PreviewAreaProps) {
             Preview
           </div>
           {sourceUrl && (
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
-            >
-              <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-1 h-3 w-3" />
-                Open in new tab
-              </a>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className="px-2 hover:bg-gray-700 hover:text-white"
+              >
+                <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="size-4" />
+                </a>
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className="px-2 hover:bg-gray-700 hover:text-white"
+              >
+                <Fullscreen className="size-4" />
+              </Button>
+            </div>
           )}
         </CardTitle>
       </CardHeader>

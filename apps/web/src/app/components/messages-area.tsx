@@ -66,9 +66,6 @@ function V0Message({ message }: { message: ChatMessage }) {
         <div className="flex-1">
           <div className="rounded-r-lg border-blue-400 border-l-4 bg-gray-900/50 py-2 pl-4">
             <div className="mb-1 flex items-center gap-2">
-              <Badge variant="default" className="bg-blue-600 text-white">
-                v0
-              </Badge>
               {message.createdAt && (
                 <span className="text-gray-500 text-xs">
                   {new Date(message.createdAt).toLocaleString()}
@@ -95,9 +92,6 @@ function V0Message({ message }: { message: ChatMessage }) {
 
       <div className="flex-1 space-y-2">
         <div className="flex items-center gap-1">
-          <Badge variant="default" className="bg-blue-600 text-white text-xs">
-            v0
-          </Badge>
           {message.createdAt && (
             <span className="text-gray-500 text-xs">
               {new Date(message.createdAt).toLocaleString()}
@@ -228,22 +222,6 @@ export function MessagesArea({ messages }: MessagesAreaProps) {
                       <div className="flex-1">
                         <div className="rounded-r-lg border-blue-400 border-l-3 bg-gray-900/50 py-1.5 pl-3">
                           <div className="mb-1 flex items-center gap-1">
-                            <Badge
-                              variant={
-                                message.type === "message"
-                                  ? "default"
-                                  : "secondary"
-                              }
-                              className={`text-xs ${
-                                message.type === "message"
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-700 text-gray-300"
-                              }`}
-                            >
-                              {message.type === "message"
-                                ? "Message"
-                                : message.type}
-                            </Badge>
                             {message.createdAt && (
                               <span className="text-gray-500 text-xs">
                                 {new Date(message.createdAt).toLocaleString()}
