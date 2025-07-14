@@ -10,9 +10,9 @@ export function AppHeader() {
           className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
           <Sparkles className="h-5 w-5 text-blue-400" />
-          <h1 className="font-bold text-white text-lg">v0 Platform Demo</h1>
+          <h1 className="font-bold text-lg text-white">v0 Platform Demo</h1>
         </Link>
       </div>
     </header>
   );
-} 
+}
