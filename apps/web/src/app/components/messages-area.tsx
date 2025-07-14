@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
 import {
   CheckCircle,
   ChevronDown,
@@ -200,70 +201,72 @@ function FilesList({ content }: { content: string }) {
 
 export function MessagesArea({ messages }: MessagesAreaProps) {
   return (
-    <Card className="border-gray-700 bg-gray-800">
-      <CardHeader>
+    <Card className="flex h-[calc(100vh-8rem)] flex-col border-gray-700 bg-gray-800">
+      <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center gap-2 text-white">
           <MessageCircle className="h-5 w-5" />
           Messages
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          {messages && messages.length > 0 ? (
-            messages.map((message: ChatMessage) => (
-              <div key={message.id}>
-                {message.type === "message" &&
-                (message.content.includes("<Thinking>") ||
-                  message.content.includes("<CodeProject")) ? (
-                  <V0Message message={message} />
-                ) : (
-                  <div className="flex gap-3">
-                    {/* User Avatar */}
-                    <div className="flex-shrink-0">
-                      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500" />
-                    </div>
+      <CardContent className="flex-1 overflow-hidden p-0">
+        <ScrollArea className="h-full px-6">
+          <div className="space-y-6 py-6">
+            {messages && messages.length > 0 ? (
+              messages.map((message: ChatMessage) => (
+                <div key={message.id}>
+                  {message.type === "message" &&
+                  (message.content.includes("<Thinking>") ||
+                    message.content.includes("<CodeProject")) ? (
+                    <V0Message message={message} />
+                  ) : (
+                    <div className="flex gap-3">
+                      {/* User Avatar */}
+                      <div className="flex-shrink-0">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500" />
+                      </div>
 
-                    <div className="flex-1">
-                      <div className="rounded-r-lg border-blue-400 border-l-4 bg-gray-900/50 py-2 pl-4">
-                        <div className="mb-1 flex items-center gap-2">
-                          <Badge
-                            variant={
-                              message.type === "message"
-                                ? "default"
-                                : "secondary"
-                            }
-                            className={
-                              message.type === "message"
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-700 text-gray-300"
-                            }
-                          >
-                            {message.type === "message"
-                              ? "Message"
-                              : message.type}
-                          </Badge>
-                          {message.createdAt && (
-                            <span className="text-gray-500 text-xs">
-                              {new Date(message.createdAt).toLocaleString()}
-                            </span>
-                          )}
-                        </div>
-                        <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300">
-                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                      <div className="flex-1">
+                        <div className="rounded-r-lg border-blue-400 border-l-4 bg-gray-900/50 py-2 pl-4">
+                          <div className="mb-1 flex items-center gap-2">
+                            <Badge
+                              variant={
+                                message.type === "message"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                              className={
+                                message.type === "message"
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-gray-700 text-gray-300"
+                              }
+                            >
+                              {message.type === "message"
+                                ? "Message"
+                                : message.type}
+                            </Badge>
+                            {message.createdAt && (
+                              <span className="text-gray-500 text-xs">
+                                {new Date(message.createdAt).toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+                          <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300">
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="py-8 text-center text-gray-500">
+                <MessageCircle className="mx-auto mb-2 h-12 w-12 opacity-50" />
+                <p>No messages found in this chat</p>
               </div>
-            ))
-          ) : (
-            <div className="py-8 text-center text-gray-500">
-              <MessageCircle className="mx-auto mb-2 h-12 w-12 opacity-50" />
-              <p>No messages found in this chat</p>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

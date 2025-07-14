@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@repo/ui/components/button";
-import { Card } from "@repo/ui/components/card";
 import { MessageCircle, Plus, Sparkles, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { Button } from "@repo/ui/components/button";
+import { Card } from "@repo/ui/components/card";
 
 export interface ChatHistoryItem {
   id: string;

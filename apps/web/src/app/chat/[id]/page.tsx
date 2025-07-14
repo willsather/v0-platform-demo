@@ -1,31 +1,23 @@
-import { Badge } from "@repo/ui/components/badge";
+import { ExternalLink, Eye } from "lucide-react";
+import { notFound } from "next/navigation";
+import { v0 } from "v0-sdk";
+
+import { ChatHistoryUpdater } from "@/app/components/chat-history-updater";
+import { MessagesArea } from "@/app/components/messages-area";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
-import { Code, ExternalLink, Eye, MessageCircle } from "lucide-react";
-import { notFound } from "next/navigation";
-import { v0 } from "v0-sdk";
-import { ChatHistoryUpdater } from "../../components/chat-history-updater";
-import { MessagesArea } from "../../components/messages-area";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
 
 interface ChatMessage {
   id: string;
   content: string;
   type: string;
   createdAt?: string;
-}
-
-interface Chat {
-  id: string;
-  url?: string;
-  demo?: string;
-  favorite?: boolean;
-  messages?: ChatMessage[];
 }
 
 interface ChatPageProps {
@@ -53,13 +45,6 @@ export default async function ChatPage({ params }: ChatPageProps) {
                 <h1 className="font-bold text-2xl text-white">Chat Session</h1>
               </div>
               <div className="flex items-center gap-2">
-                <Badge
-                  variant="secondary"
-                  className="border-gray-700 bg-gray-800 text-gray-200"
-                >
-                  <MessageCircle className="mr-1 h-3 w-3" />
-                  {chat.messages?.length || 0} messages
-                </Badge>
                 {chat.url && (
                   <Button
                     variant="outline"
@@ -82,113 +67,36 @@ export default async function ChatPage({ params }: ChatPageProps) {
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {/* Messages Section */}
-            <div className="space-y-4">
-              <MessagesArea messages={chat.messages || []} />
+            <MessagesArea messages={chat.messages || []} />
 
-              {/* Chat Info */}
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle className="text-white">Chat Information</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Chat ID:</span>
-                      <span className="font-mono text-gray-300 text-xs">
-                        {chat.id}
-                      </span>
-                    </div>
-                    {chat.url && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">URL:</span>
-                        <a
-                          href={chat.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-400 text-xs hover:underline"
-                        >
-                          View on v0.dev
-                        </a>
-                      </div>
-                    )}
-                    {chat.demo && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Demo:</span>
-                        <a
-                          href={chat.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-400 text-xs hover:underline"
-                        >
-                          View preview
-                        </a>
-                      </div>
-                    )}
-                    {chat.favorite !== undefined && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Favorite:</span>
-                        <Badge
-                          variant={chat.favorite ? "default" : "secondary"}
-                          className={
-                            chat.favorite
-                              ? "bg-blue-600 text-white"
-                              : "bg-gray-700 text-gray-300"
-                          }
-                        >
-                          {chat.favorite ? "Yes" : "No"}
-                        </Badge>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Preview Section */}
-            <div>
-              <Card className="h-full border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
+            <Card className="flex h-[calc(100vh-8rem)] flex-col border-gray-700 bg-gray-800">
+              <CardHeader className="flex-shrink-0">
+                <CardTitle className="flex justify-between items-center gap-2 text-white">
+                  <div className="flex items-center gap-2">
                     <Eye className="h-5 w-5" />
                     Preview
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
+                  >
+                    <a
+                      href={chat.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="mr-1 h-3 w-3" />
+                      Open in new tab
+                    </a>
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1 overflow-hidden p-0">
+                <ScrollArea className="h-full px-6">
                   {chat.demo ? (
                     <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          asChild
-                          className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
-                        >
-                          <a
-                            href={chat.demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <ExternalLink className="mr-1 h-3 w-3" />
-                            Open in new tab
-                          </a>
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          asChild
-                          className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
-                        >
-                          <a
-                            href={chat.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Code className="mr-1 h-3 w-3" />
-                            View source
-                          </a>
-                        </Button>
-                      </div>
                       <div className="overflow-hidden rounded-lg border border-gray-700">
                         <iframe
                           src={chat.demo}
@@ -207,9 +115,9 @@ export default async function ChatPage({ params }: ChatPageProps) {
                       </p>
                     </div>
                   )}
-                </CardContent>
-              </Card>
-            </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

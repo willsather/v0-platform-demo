@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+
 import type { ChatHistoryItem } from "./chat-sidebar";
 
 interface ChatMessage {
