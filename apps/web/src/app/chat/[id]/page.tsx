@@ -11,6 +11,7 @@ import { Code, ExternalLink, Eye, MessageCircle } from "lucide-react";
 import { notFound } from "next/navigation";
 import { v0 } from "v0-sdk";
 import { ChatHistoryUpdater } from "../../components/chat-history-updater";
+import { MessagesArea } from "../../components/messages-area";
 
 interface ChatMessage {
   id: string;
@@ -83,58 +84,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Messages Section */}
             <div className="space-y-4">
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <MessageCircle className="h-5 w-5" />
-                    Messages
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {chat.messages && chat.messages.length > 0 ? (
-                      chat.messages.map((message: ChatMessage) => (
-                        <div
-                          key={message.id}
-                          className="rounded-r-lg border-blue-400 border-l-4 bg-gray-900/50 py-2 pl-4"
-                        >
-                          <div className="mb-1 flex items-center gap-2">
-                            <Badge
-                              variant={
-                                message.type === "message"
-                                  ? "default"
-                                  : "secondary"
-                              }
-                              className={
-                                message.type === "message"
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-700 text-gray-300"
-                              }
-                            >
-                              {message.type === "message"
-                                ? "Message"
-                                : message.type}
-                            </Badge>
-                            {message.createdAt && (
-                              <span className="text-gray-500 text-xs">
-                                {new Date(message.createdAt).toLocaleString()}
-                              </span>
-                            )}
-                          </div>
-                          <p className="whitespace-pre-wrap text-gray-300 text-sm">
-                            {message.content}
-                          </p>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="py-8 text-center text-gray-500">
-                        <MessageCircle className="mx-auto mb-2 h-12 w-12 opacity-50" />
-                        <p>No messages found in this chat</p>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <MessagesArea messages={chat.messages || []} />
 
               {/* Chat Info */}
               <Card className="border-gray-700 bg-gray-800">
