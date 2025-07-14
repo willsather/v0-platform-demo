@@ -85,17 +85,17 @@ function V0Message({ message }: { message: ChatMessage }) {
   }
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-2">
       {/* V0 Avatar */}
       <div className="flex-shrink-0">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black">
+        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-black">
           <span className="font-bold text-white text-xs">v0</span>
         </div>
       </div>
 
-      <div className="flex-1 space-y-3">
-        <div className="flex items-center gap-2">
-          <Badge variant="default" className="bg-blue-600 text-white">
+      <div className="flex-1 space-y-2">
+        <div className="flex items-center gap-1">
+          <Badge variant="default" className="bg-blue-600 text-white text-xs">
             v0
           </Badge>
           {message.createdAt && (
@@ -107,7 +107,7 @@ function V0Message({ message }: { message: ChatMessage }) {
 
         {/* Thinking Section */}
         {thinkingContent && (
-          <div className="rounded-lg border border-amber-400/20 bg-amber-50/5 p-4">
+          <div className="rounded-lg border border-amber-400/20 bg-amber-50/5 p-2">
             <button
               type="button"
               onClick={() => setIsThinkingExpanded(!isThinkingExpanded)}
@@ -118,12 +118,12 @@ function V0Message({ message }: { message: ChatMessage }) {
               ) : (
                 <ChevronRight className="size-3 text-amber-400" />
               )}
-              <span className="font-medium text-amber-400 text-sm">
+              <span className="font-medium text-amber-400 text-xs">
                 Thinking
               </span>
             </button>
             {isThinkingExpanded && (
-              <div className="mt-2 whitespace-pre-wrap text-gray-300 text-sm leading-relaxed">
+              <div className="mt-2 whitespace-pre-wrap text-gray-300 text-xs leading-relaxed">
                 {thinkingContent}
               </div>
             )}
@@ -132,12 +132,12 @@ function V0Message({ message }: { message: ChatMessage }) {
 
         {/* Files Section */}
         {codeProjectContent && (
-          <div className="rounded-lg border border-green-400/20 bg-green-50/5 p-3">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="font-medium text-green-400 text-sm">Files</span>
+          <div className="rounded-lg border border-green-400/20 bg-green-50/5 p-2">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="font-medium text-green-400 text-xs">Files</span>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <FilesList content={codeProjectContent} />
             </div>
           </div>
@@ -145,8 +145,8 @@ function V0Message({ message }: { message: ChatMessage }) {
 
         {/* Normal Response Text */}
         {normalContent && (
-          <div className="rounded-lg border border-gray-600/20 bg-gray-800/30 p-4">
-            <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300 leading-relaxed">
+          <div className="rounded-lg border border-gray-600/20 bg-gray-800/30 p-2">
+            <div className="prose prose-xs prose-invert max-w-none prose-code:text-xs prose-headings:text-xs prose-li:text-xs prose-ol:text-xs prose-strong:text-xs prose-ul:text-xs text-xs leading-relaxed">
               <ReactMarkdown>{normalContent}</ReactMarkdown>
             </div>
           </div>
@@ -169,17 +169,17 @@ function FilesList({ content }: { content: string }) {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {matches.map((match, index) => {
         const [, , fileName] = match;
         const uniqueKey = `${fileName}-${index}`;
         return (
           <div
             key={uniqueKey}
-            className="flex items-center justify-between rounded-lg border border-gray-700 bg-gray-800/50 px-3 py-2"
+            className="flex items-center justify-between rounded-lg border border-gray-700 bg-gray-800/50 px-2 py-1.5"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center rounded-full bg-gray-400 p-1">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center rounded-full bg-gray-400 p-0.5">
                 <CheckCircle className="size-2" />
               </div>
               <span className="font-mono text-gray-300 text-xs">
@@ -201,16 +201,16 @@ function FilesList({ content }: { content: string }) {
 
 export function MessagesArea({ messages }: MessagesAreaProps) {
   return (
-    <Card className="flex h-[calc(100vh-8rem)] flex-col border-gray-700 bg-gray-800">
-      <CardHeader className="flex-shrink-0">
-        <CardTitle className="flex items-center gap-2 text-white">
-          <MessageCircle className="h-5 w-5" />
+    <Card className="flex h-[calc(100vh-12rem)] flex-col border-gray-700 bg-gray-800">
+      <CardHeader className="flex-shrink-0 pb-2">
+        <CardTitle className="flex items-center gap-2 text-white text-sm">
+          <MessageCircle className="h-3 w-3" />
           Messages
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden p-0">
-        <ScrollArea className="h-full px-6">
-          <div className="space-y-6 py-6">
+        <ScrollArea className="h-full px-4">
+          <div className="space-y-4 py-4">
             {messages && messages.length > 0 ? (
               messages.map((message: ChatMessage) => (
                 <div key={message.id}>
@@ -219,26 +219,26 @@ export function MessagesArea({ messages }: MessagesAreaProps) {
                     message.content.includes("<CodeProject")) ? (
                     <V0Message message={message} />
                   ) : (
-                    <div className="flex gap-3">
+                    <div className="flex gap-2">
                       {/* User Avatar */}
                       <div className="flex-shrink-0">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500" />
+                        <div className="h-6 w-6 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500" />
                       </div>
 
                       <div className="flex-1">
-                        <div className="rounded-r-lg border-blue-400 border-l-4 bg-gray-900/50 py-2 pl-4">
-                          <div className="mb-1 flex items-center gap-2">
+                        <div className="rounded-r-lg border-blue-400 border-l-3 bg-gray-900/50 py-1.5 pl-3">
+                          <div className="mb-1 flex items-center gap-1">
                             <Badge
                               variant={
                                 message.type === "message"
                                   ? "default"
                                   : "secondary"
                               }
-                              className={
+                              className={`text-xs ${
                                 message.type === "message"
                                   ? "bg-blue-600 text-white"
                                   : "bg-gray-700 text-gray-300"
-                              }
+                              }`}
                             >
                               {message.type === "message"
                                 ? "Message"
@@ -250,7 +250,7 @@ export function MessagesArea({ messages }: MessagesAreaProps) {
                               </span>
                             )}
                           </div>
-                          <div className="prose prose-sm prose-invert max-w-none prose-code:text-gray-200 prose-headings:text-gray-200 prose-li:text-gray-300 prose-ol:text-gray-300 prose-strong:text-gray-200 prose-ul:text-gray-300 text-gray-300">
+                          <div className="prose prose-xs prose-invert max-w-none prose-code:text-xs prose-headings:text-xs prose-li:text-xs prose-ol:text-xs prose-strong:text-xs prose-ul:text-xs text-xs">
                             <ReactMarkdown>{message.content}</ReactMarkdown>
                           </div>
                         </div>
@@ -260,9 +260,9 @@ export function MessagesArea({ messages }: MessagesAreaProps) {
                 </div>
               ))
             ) : (
-              <div className="py-8 text-center text-gray-500">
-                <MessageCircle className="mx-auto mb-2 h-12 w-12 opacity-50" />
-                <p>No messages found in this chat</p>
+              <div className="py-4 text-center text-gray-500">
+                <MessageCircle className="mx-auto mb-2 h-6 w-6 opacity-50" />
+                <p className="text-xs">No messages found in this chat</p>
               </div>
             )}
           </div>

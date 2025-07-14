@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { AppHeader } from "./components/app-header";
 import { ChatSidebar } from "./components/chat-sidebar";
 
 import "@repo/ui/styles/tailwind.css";
@@ -23,9 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${GeistSans.className} bg-gray-900`}>
-        <div className="flex min-h-screen">
-          <ChatSidebar />
-          <main className="flex-1">{children}</main>
+        <div className="flex flex-col">
+          <AppHeader />
+          <div className="flex">
+            <ChatSidebar />
+            <main>{children}</main>
+          </div>
         </div>
 
         <Analytics />
