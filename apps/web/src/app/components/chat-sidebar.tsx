@@ -84,7 +84,7 @@ export function ChatSidebar() {
             onClick={toggleSidebar}
             className="text-gray-400 hover:bg-gray-800 hover:text-white"
           >
-            <Menu className="h-4 w-4" />
+            <Menu className="size-4" />
           </Button>
           {!isMinimized && (
             <Button

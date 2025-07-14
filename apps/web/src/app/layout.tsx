@@ -28,7 +28,7 @@ export default function RootLayout({
           <AppHeader />
           <div className="flex">
             <ChatSidebar />
-            <main>{children}</main>
+            {children}
           </div>
         </div>
 

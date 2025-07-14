@@ -25,7 +25,7 @@ export function PreviewArea({ demoUrl, sourceUrl }: PreviewAreaProps) {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
 
   return (
-    <Card className="flex h-[calc(100vh-12rem)] flex-col border-gray-700 bg-gray-800 lg:col-span-3">
+    <Card className="flex h-[83vh] flex-col border-gray-700 bg-gray-800 lg:col-span-3">
       <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center justify-between gap-2 text-white">
           <div className="flex items-center gap-2">

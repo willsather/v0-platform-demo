@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { v0 } from "v0-sdk";
 
 export interface ChatActionResult {
@@ -48,5 +49,33 @@ export async function createChat(
   } catch (error) {
     console.error("Error creating chat:", error);
     return { success: false, error: "Failed to create chat" };
+  }
+}
+
+export async function createMessage(
+  chatId: string,
+  message: string,
+): Promise<{ success: boolean; error?: string }> {
+  if (!chatId?.trim()) {
+    return { success: false, error: "Chat ID is required" };
+  }
+
+  if (!message?.trim()) {
+    return { success: false, error: "Message is required" };
+  }
+
+  try {
+    await v0.chats.createMessage({
+      chatId: chatId.trim(),
+      message: message.trim(),
+    });
+
+    // Revalidate the chat page to show the new message
+    revalidatePath(`/chat/${chatId}`);
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error creating message:", error);
+    return { success: false, error: "Failed to send message" };
   }
 }

@@ -195,7 +195,7 @@ function FilesList({ content }: { content: string }) {
 
 export function MessagesArea({ messages }: MessagesAreaProps) {
   return (
-    <Card className="flex h-[calc(100vh-12rem)] flex-col border-gray-700 bg-gray-800">
+    <Card className="flex h-[75vh] flex-col border-gray-700 bg-gray-800">
       <CardHeader className="flex-shrink-0 pb-2">
         <CardTitle className="flex items-center gap-2 text-sm text-white">
           <MessageCircle className="h-3 w-3" />

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { v0 } from "v0-sdk";
 
 import { ChatHistoryUpdater } from "@/app/components/chat-history-updater";
+import { MessageInput } from "@/app/components/message-input";
 import { MessagesArea } from "@/app/components/messages-area";
 import { PreviewArea } from "@/app/components/preview-area";
 import { Button } from "@repo/ui/components/button";
@@ -36,6 +37,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   return (
     <>
       <ChatHistoryUpdater chatId={id} chatData={chat} />
+
       <div className="min-h-[90vh] bg-gray-900 p-4">
         <div className="mx-auto max-w-7xl">
           {/* Header */}
@@ -68,7 +70,10 @@ export default async function ChatPage({ params }: ChatPageProps) {
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
             <div className="lg:col-span-2">
-              <MessagesArea messages={chat.messages || []} />
+              <div className="space-y-4">
+                <MessagesArea messages={chat.messages || []} />
+                <MessageInput chatId={id} />
+              </div>
             </div>
 
             <PreviewArea demoUrl={chat.demo} sourceUrl={chat.url} />
