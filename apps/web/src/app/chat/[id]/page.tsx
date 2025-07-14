@@ -43,24 +43,29 @@ export default async function ChatPage({ params }: ChatPageProps) {
   return (
     <>
       <ChatHistoryUpdater chatId={id} chatData={chat} />
-      <div className="min-h-screen bg-gray-50 p-4">
+      <div className="min-h-screen bg-gray-900 p-4">
         <div className="mx-auto max-w-7xl">
           {/* Header */}
           <div className="mb-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="font-bold text-2xl text-gray-900">
-                  Chat Session
-                </h1>
-                <p className="text-gray-600">Chat ID: {id}</p>
+                <h1 className="font-bold text-2xl text-white">Chat Session</h1>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">
+                <Badge
+                  variant="secondary"
+                  className="border-gray-700 bg-gray-800 text-gray-200"
+                >
                   <MessageCircle className="mr-1 h-3 w-3" />
                   {chat.messages?.length || 0} messages
                 </Badge>
                 {chat.url && (
-                  <Button variant="outline" size="sm" asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
+                  >
                     <a
                       href={chat.url}
                       target="_blank"
@@ -78,15 +83,12 @@ export default async function ChatPage({ params }: ChatPageProps) {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Messages Section */}
             <div className="space-y-4">
-              <Card>
+              <Card className="border-gray-700 bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-white">
                     <MessageCircle className="h-5 w-5" />
                     Messages
                   </CardTitle>
-                  <CardDescription>
-                    Conversation history for this chat session
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -94,7 +96,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
                       chat.messages.map((message: ChatMessage) => (
                         <div
                           key={message.id}
-                          className="border-blue-500 border-l-4 py-2 pl-4"
+                          className="rounded-r-lg border-blue-400 border-l-4 bg-gray-900/50 py-2 pl-4"
                         >
                           <div className="mb-1 flex items-center gap-2">
                             <Badge
@@ -102,6 +104,11 @@ export default async function ChatPage({ params }: ChatPageProps) {
                                 message.type === "message"
                                   ? "default"
                                   : "secondary"
+                              }
+                              className={
+                                message.type === "message"
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-gray-700 text-gray-300"
                               }
                             >
                               {message.type === "message"
@@ -114,7 +121,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
                               </span>
                             )}
                           </div>
-                          <p className="whitespace-pre-wrap text-gray-700 text-sm">
+                          <p className="whitespace-pre-wrap text-gray-300 text-sm">
                             {message.content}
                           </p>
                         </div>
@@ -130,24 +137,26 @@ export default async function ChatPage({ params }: ChatPageProps) {
               </Card>
 
               {/* Chat Info */}
-              <Card>
+              <Card className="border-gray-700 bg-gray-800">
                 <CardHeader>
-                  <CardTitle>Chat Information</CardTitle>
+                  <CardTitle className="text-white">Chat Information</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Chat ID:</span>
-                      <span className="font-mono text-xs">{chat.id}</span>
+                      <span className="text-gray-400">Chat ID:</span>
+                      <span className="font-mono text-gray-300 text-xs">
+                        {chat.id}
+                      </span>
                     </div>
                     {chat.url && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600">URL:</span>
+                        <span className="text-gray-400">URL:</span>
                         <a
                           href={chat.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 text-xs hover:underline"
+                          className="text-blue-400 text-xs hover:underline"
                         >
                           View on v0.dev
                         </a>
@@ -155,12 +164,12 @@ export default async function ChatPage({ params }: ChatPageProps) {
                     )}
                     {chat.demo && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Demo:</span>
+                        <span className="text-gray-400">Demo:</span>
                         <a
                           href={chat.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 text-xs hover:underline"
+                          className="text-blue-400 text-xs hover:underline"
                         >
                           View preview
                         </a>
@@ -168,9 +177,14 @@ export default async function ChatPage({ params }: ChatPageProps) {
                     )}
                     {chat.favorite !== undefined && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Favorite:</span>
+                        <span className="text-gray-400">Favorite:</span>
                         <Badge
                           variant={chat.favorite ? "default" : "secondary"}
+                          className={
+                            chat.favorite
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-700 text-gray-300"
+                          }
                         >
                           {chat.favorite ? "Yes" : "No"}
                         </Badge>
@@ -183,21 +197,23 @@ export default async function ChatPage({ params }: ChatPageProps) {
 
             {/* Preview Section */}
             <div>
-              <Card className="h-full">
+              <Card className="h-full border-gray-700 bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-white">
                     <Eye className="h-5 w-5" />
                     Live Preview
                   </CardTitle>
-                  <CardDescription>
-                    Interactive preview of the generated code
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {chat.demo ? (
                     <div className="space-y-4">
                       <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          asChild
+                          className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
+                        >
                           <a
                             href={chat.demo}
                             target="_blank"
@@ -207,7 +223,12 @@ export default async function ChatPage({ params }: ChatPageProps) {
                             Open in new tab
                           </a>
                         </Button>
-                        <Button variant="outline" size="sm" asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          asChild
+                          className="border-gray-700 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white"
+                        >
                           <a
                             href={chat.url}
                             target="_blank"
@@ -218,7 +239,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
                           </a>
                         </Button>
                       </div>
-                      <div className="overflow-hidden rounded-lg border">
+                      <div className="overflow-hidden rounded-lg border border-gray-700">
                         <iframe
                           src={chat.demo}
                           className="h-96 w-full border-0"

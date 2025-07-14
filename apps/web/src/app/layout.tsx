@@ -10,7 +10,7 @@ import { ChatSidebar } from "./components/chat-sidebar";
 import "@repo/ui/styles/tailwind.css";
 
 export const metadata: Metadata = {
-  title: "AI UI Generator",
+  title: "v0 Platform Demo",
   description: "Generate beautiful UI components using AI. Powered by V0 SDK.",
   icons: [{ rel: "icon", url: "/favicon.svg", type: "image/svg+xml" }],
 };
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={GeistSans.className}>
+      <body className={`${GeistSans.className} bg-gray-900`}>
         <div className="flex min-h-screen">
           <ChatSidebar />
           <main className="flex-1">{children}</main>

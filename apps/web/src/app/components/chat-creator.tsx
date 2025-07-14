@@ -1,22 +1,52 @@
 "use client";
 
 import { Button } from "@repo/ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
-import { MessageCircle, Sparkles } from "lucide-react";
+import { ArrowUp, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 import { createChat } from "../actions/chat-actions";
 import type { ChatHistoryItem } from "./chat-sidebar";
 
+function FormContent({
+  message,
+  setMessage,
+}: { message: string; setMessage: (value: string) => void }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <div className="relative">
+      <textarea
+        name="message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Build a landing page for a banana stand"
+        className="max-h-40 min-h-[60px] w-full resize-none rounded-2xl border border-gray-700 bg-gray-800 p-4 pr-12 text-white placeholder-gray-400 focus:border-gray-600 focus:outline-none focus:ring-0 disabled:opacity-50"
+        required
+        disabled={pending}
+      />
+      <Button
+        type="submit"
+        disabled={pending || !message.trim()}
+        className={`absolute right-4 bottom-4 h-8 w-8 rounded-full p-0 transition-colors ${
+          pending || !message.trim()
+            ? "cursor-not-allowed bg-gray-600 text-gray-400"
+            : "bg-white text-gray-900 hover:bg-gray-100"
+        }`}
+      >
+        {pending ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          <ArrowUp className="size-4" />
+        )}
+      </Button>
+    </div>
+  );
+}
+
 export function ChatCreator() {
-  const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
   const router = useRouter();
 
   const addChatToHistory = (chatData: ChatHistoryItem) => {
@@ -37,7 +67,6 @@ export function ChatCreator() {
   };
 
   const handleSubmit = async (formData: FormData) => {
-    setIsCreating(true);
     setError(null);
 
     try {
@@ -51,56 +80,48 @@ export function ChatCreator() {
         router.push(`/chat/${result.chatData.id}`);
       } else {
         setError(result.error || "Failed to create chat");
-        setIsCreating(false);
       }
     } catch (error) {
       console.error("Error creating chat:", error);
       setError("Failed to create chat");
-      setIsCreating(false);
     }
   };
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setMessage(suggestion);
+  };
+
+  const suggestions = [
+    "Build a pricing section",
+    "Design a contact form",
+    "Make a dashboard with charts",
+  ];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MessageCircle className="h-5 w-5" />
-          Create New Chat
-        </CardTitle>
-        <CardDescription>
-          Tell me what you want to build and I'll create a beautiful React
-          component for you
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form action={handleSubmit} className="space-y-4">
-          <div>
-            <textarea
-              name="message"
-              placeholder="e.g., Create a responsive navbar with dark mode toggle, or Build a pricing section with three tiers..."
-              className="min-h-32 w-full resize-none rounded-md border border-gray-300 p-3 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-              required
-              disabled={isCreating}
-            />
-          </div>
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-          <div className="flex justify-end">
-            <Button type="submit" className="gap-2" disabled={isCreating}>
-              {isCreating ? (
-                <>
-                  <Sparkles className="h-4 w-4 animate-spin" />
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  Generate Component
-                </>
-              )}
+    <div className="relative">
+      <form action={handleSubmit} className="space-y-6">
+        {/* Main input */}
+        <FormContent message={message} setMessage={setMessage} />
+
+        {error && (
+          <div className="text-center text-red-400 text-sm">{error}</div>
+        )}
+
+        {/* Suggestion buttons */}
+        <div className="flex flex-wrap justify-center gap-2">
+          {suggestions.map((suggestion) => (
+            <Button
+              key={suggestion}
+              type="button"
+              variant="outline"
+              onClick={() => handleSuggestionClick(suggestion)}
+              className="rounded-full border-gray-600 bg-transparent text-gray-300 hover:border-gray-500 hover:bg-gray-800 hover:text-white disabled:opacity-50"
+            >
+              {suggestion}
             </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+          ))}
+        </div>
+      </form>
+    </div>
   );
 }

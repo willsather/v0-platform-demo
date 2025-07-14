@@ -55,22 +55,28 @@ export function ChatSidebar() {
   };
 
   return (
-    <div className="h-screen w-64 overflow-y-auto border-gray-200 border-r bg-white">
+    <div className="h-screen w-64 overflow-y-auto border-gray-700 border-r bg-gray-900">
       <div className="p-4">
         {/* Header with title */}
         <div className="mb-6">
-          <div className="mb-2 flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-blue-600" />
-            <h1 className="font-bold text-gray-900 text-lg">
-              v0 Platform Demo
-            </h1>
-          </div>
+          <Link
+            href="/"
+            className="mb-2 flex items-center gap-2 transition-opacity hover:opacity-80"
+          >
+            <Sparkles className="h-6 w-6 text-blue-400" />
+            <h1 className="font-bold text-lg text-white">v0 Platform Demo</h1>
+          </Link>
         </div>
 
         {/* Chat History Section */}
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-semibold text-gray-900">Recent Chats</h2>
-          <Button variant="ghost" size="sm" asChild>
+          <h2 className="font-semibold text-gray-200">Recent Chats</h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="text-gray-400 hover:bg-gray-800 hover:text-white"
+          >
             <Link href="/">
               <Plus className="h-4 w-4" />
             </Link>
@@ -88,13 +94,17 @@ export function ChatSidebar() {
             chats.map((chat) => (
               <Card
                 key={chat.id}
-                className="rounded-lg p-2 shadow-none hover:bg-gray-50"
+                className={`rounded-lg border-gray-700 p-2 shadow-none transition-colors ${
+                  pathname === `/chat/${chat.id}`
+                    ? "border-gray-600 bg-gray-800"
+                    : "bg-gray-900 hover:bg-gray-800"
+                }`}
               >
                 <div className="flex items-center justify-between gap-2">
                   <Link href={`/chat/${chat.id}`} className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <MessageCircle className="h-3 w-3 flex-shrink-0 text-gray-400" />
-                      <span className="truncate font-medium text-gray-900 text-sm">
+                      <span className="truncate font-medium text-gray-200 text-sm">
                         {truncateTitle(chat.title)}
                       </span>
                     </div>
@@ -106,7 +116,7 @@ export function ChatSidebar() {
                       e.preventDefault();
                       deleteChat(chat.id);
                     }}
-                    className="h-6 w-6 p-0 hover:bg-red-50 hover:text-red-600"
+                    className="h-6 w-6 p-0 text-gray-400 hover:bg-red-900/20 hover:text-red-400"
                   >
                     <Trash2 className="h-3 w-3" />
                   </Button>
